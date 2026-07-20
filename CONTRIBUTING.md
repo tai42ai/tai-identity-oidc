@@ -1,0 +1,54 @@
+# Contributing to tai-identity-oidc
+
+`tai-identity-oidc` is the validate-only OIDC **identity provider** for the TAI
+ecosystem. The hard rule (the plugin rule): **it depends on `tai-contract` +
+`tai-kit` only and never imports the skeleton.** The provider registers itself as
+`"identity-oidc"` in the contract's module-level identity-provider registry at
+import — there is no import edge to the skeleton in either direction.
+
+## Ground rules
+
+- **No skeleton import — ever.** The package is contract-facing; the ban is
+  enforced by ruff (`flake8-tidy-imports`), so a stray import fails lint:
+  ```bash
+  grep -rn "tai_skeleton" src/   # must be empty
+  ```
+- **Validate-only.** This provider mints no keys and holds no state: it
+  implements the base `IdentityProvider` ABC, **not** `ApiKeyIdentityProvider`.
+- **Loud, fail-closed errors.** No swallowed exceptions, silent fallbacks, or
+  silent truncation. A JWT-shaped token that fails verification **raises** and the
+  request denies; an unreachable/broken issuer is caught loudly by
+  `healthcheck()` at startup.
+- **Typed package** (`py.typed`). Pyright runs clean.
+
+## Layout
+
+- `src/tai_identity_oidc/provider.py` — the `OidcIdentityProvider` (JWT
+  validation against the issuer's JWKS), its `OidcIdentitySettings`, and the
+  module-level registration.
+- `tests/` — the provider's behavior against a local loopback OIDC issuer with
+  in-test RSA keys.
+
+## Dev
+
+```bash
+uv sync --extra dev
+uv run ruff check .
+uv run ruff format --check .
+uv run pyright
+uv run pytest
+```
+
+For local cross-repo work, `make dev` editable-installs the sibling `tai-*`
+checkouts this package builds on into the venv. While `[tool.uv.sources]` pins
+those siblings to local paths, `uv sync` already installs them editable and
+`make dev` changes nothing; once the lock resolves them from the registry,
+`uv sync` / `uv run` installs the published builds instead, so re-run
+`make dev` afterward to restore the editable links.
+
+Before any commit, run a secret scan over `src/` and `tests/` (e.g.
+`detect-secrets scan`).
+
+## License
+
+By contributing you agree your contributions are licensed under Apache-2.0.

@@ -3,13 +3,13 @@
 Resolves an issuer-minted JWT presented on an API call to an authenticated
 identity: a cheap structural gate claims JWT-shaped tokens (non-JWT credentials
 fall through the provider chain untouched), the token is verified against the
-issuer's JWKS via :mod:`tai_kit.net.jwt`, and the verified claims become the
+issuer's JWKS via :mod:`tai42_kit.net.jwt`, and the verified claims become the
 identity. The subject is namespaced ``idp:{issuer}:{sub}`` so an issuer subject
 never collides with an account, key, or login-subject id in the shared policy
 namespace.
 
 This provider VALIDATES only. It implements the base
-:class:`tai_contract.access_control.identity.IdentityProvider` ABC — deliberately
+:class:`tai42_contract.access_control.identity.IdentityProvider` ABC — deliberately
 NOT :class:`ApiKeyIdentityProvider`: it mints no keys and holds no state, so the
 skeleton's key-minting surface refuses it loudly. An issuer-authenticated subject
 with no operator-provisioned policy resolves to the empty ``AccessPolicy`` and is
@@ -27,15 +27,15 @@ import logging
 
 from pydantic import Field
 from pydantic_settings import SettingsConfigDict
-from tai_contract.access_control import OWNER_USER_ID_CLAIM
-from tai_contract.access_control.identity import (
+from tai42_contract.access_control import OWNER_USER_ID_CLAIM
+from tai42_contract.access_control.identity import (
     AuthIdentity,
     IdentityProvider,
     IdentityProviderSettings,
 )
-from tai_contract.access_control.registry import register_identity_provider
-from tai_kit.net.jwt import JwksCache, JwtVerifyError, fetch_discovery, looks_like_jwt, verify_jwt
-from tai_kit.settings import TaiBaseSettings
+from tai42_contract.access_control.registry import register_identity_provider
+from tai42_kit.net.jwt import JwksCache, JwtVerifyError, fetch_discovery, looks_like_jwt, verify_jwt
+from tai42_kit.settings import TaiBaseSettings
 
 logger = logging.getLogger(__name__)
 
@@ -175,7 +175,7 @@ class OidcIdentityProvider(IdentityProvider):
 
 
 # Module-level registration: the plugin registers itself as "identity-oidc" in the
-# contract's direct-import registry at its own import, with no ``tai_app`` handle
+# contract's direct-import registry at its own import, with no ``tai42_app`` handle
 # involved. The factory is the class itself — ``OidcIdentityProvider(settings)``
 # builds a live provider from the injected settings shape.
 register_identity_provider("identity-oidc", OidcIdentityProvider)

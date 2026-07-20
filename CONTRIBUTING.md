@@ -1,8 +1,8 @@
-# Contributing to tai-identity-oidc
+# Contributing to tai42-identity-oidc
 
-`tai-identity-oidc` is the validate-only OIDC **identity provider** for the TAI
-ecosystem. The hard rule (the plugin rule): **it depends on `tai-contract` +
-`tai-kit` only and never imports the skeleton.** The provider registers itself as
+`tai42-identity-oidc` is the validate-only OIDC **identity provider** for the TAI
+ecosystem. The hard rule (the plugin rule): **it depends on `tai42-contract` +
+`tai42-kit` only and never imports the skeleton.** The provider registers itself as
 `"identity-oidc"` in the contract's module-level identity-provider registry at
 import — there is no import edge to the skeleton in either direction.
 
@@ -11,7 +11,7 @@ import — there is no import edge to the skeleton in either direction.
 - **No skeleton import — ever.** The package is contract-facing; the ban is
   enforced by ruff (`flake8-tidy-imports`), so a stray import fails lint:
   ```bash
-  grep -rn "tai_skeleton" src/   # must be empty
+  grep -rn "tai42_skeleton" src/   # must be empty
   ```
 - **Validate-only.** This provider mints no keys and holds no state: it
   implements the base `IdentityProvider` ABC, **not** `ApiKeyIdentityProvider`.
@@ -23,7 +23,7 @@ import — there is no import edge to the skeleton in either direction.
 
 ## Layout
 
-- `src/tai_identity_oidc/provider.py` — the `OidcIdentityProvider` (JWT
+- `src/tai42_identity_oidc/provider.py` — the `OidcIdentityProvider` (JWT
   validation against the issuer's JWKS), its `OidcIdentitySettings`, and the
   module-level registration.
 - `tests/` — the provider's behavior against a local loopback OIDC issuer with

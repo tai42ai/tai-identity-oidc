@@ -183,7 +183,7 @@ def _isolate_identity_registry() -> Iterator[None]:
     test, so a test that registers (or clears) a provider never leaks into the
     next. The plugin's ``identity-oidc`` registration (registered at the provider
     module's import) is captured by the baseline snapshot and restored."""
-    from tai_contract.access_control import registry
+    from tai42_contract.access_control import registry
 
     saved = dict(registry._REGISTRY)
     try:

@@ -3,7 +3,7 @@ requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "tai-identity-oidc"
+name = "tai42-identity-oidc"
 version = "0.1.0"
 description = "Validate-only OIDC identity provider for the TAI ecosystem: an installable plugin that registers itself as the \"identity-oidc\" identity provider and resolves an issuer-minted JWT to an authenticated identity (no key minting, no stored state)."
 readme = "README.md"
@@ -26,12 +26,12 @@ dependencies = [
     # The pure interface contract the provider registers through: the identity
     # ABCs (IdentityProvider, IdentityProviderSettings, AuthIdentity) and the
     # module-level identity-provider registry.
-    "tai-contract>=0.1,<0.2",
-    # The OIDC discovery / JWKS / JWT-verify helper (tai_kit.net.jwt). The `jwt`
+    "tai42-contract>=0.1,<0.2",
+    # The OIDC discovery / JWKS / JWT-verify helper (tai42_kit.net.jwt). The `jwt`
     # extra is REQUIRED, not optional: that module imports joserfc at module top,
-    # so tai-kit[jwt] must resolve for this plugin to import. NO redis extra —
+    # so tai42-kit[jwt] must resolve for this plugin to import. NO redis extra —
     # this provider validates only and holds no state.
-    "tai-kit[jwt]>=0.1,<0.2",
+    "tai42-kit[jwt]>=0.1,<0.2",
 ]
 
 [project.urls]
@@ -55,14 +55,21 @@ package-dir = { "" = "src" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["tai_identity_oidc*"]
+include = ["tai42_identity_oidc*"]
 
 [tool.setuptools.package-data]
-tai_identity_oidc = ["py.typed"]
+tai42_identity_oidc = ["py.typed"]
 
 [tool.uv]
 cache-keys = [{ file = "pyproject.toml" }]
 
+
+# The version floors in [project] are the compatibility contract; these path
+# sources resolve the sibling checkouts while the packages are unpublished.
+# They are not part of wheel metadata.
+[tool.uv.sources]
+tai42-contract = { path = "../tai-contract", editable = true }
+tai42-kit = { path = "../tai-kit", editable = true }
 [tool.ruff]
 src = ["src"]
 target-version = "py313"
@@ -72,7 +79,7 @@ line-length = 120
 select = ["E", "W", "F", "I", "UP", "B", "C4", "SIM", "PIE", "PT", "RUF", "TID"]
 
 [tool.ruff.lint.flake8-tidy-imports.banned-api]
-"tai_skeleton".msg = "tai-identity-oidc is a contract-facing plugin: it never imports tai-skeleton."
+"tai42_skeleton".msg = "tai42-identity-oidc is a contract-facing plugin: it never imports tai42-skeleton."
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -81,7 +88,7 @@ asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 
 [tool.coverage.run]
-source = ["tai_identity_oidc"]
+source = ["tai42_identity_oidc"]
 
 [tool.coverage.report]
 fail_under = 95

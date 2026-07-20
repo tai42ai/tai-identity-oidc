@@ -12,12 +12,12 @@ from typing import Any
 
 import pytest
 from pydantic import ValidationError
-from tai_contract.access_control import OWNER_USER_ID_CLAIM
-from tai_contract.access_control.identity import ApiKeyIdentityProvider, AuthIdentity, IdentityProvider
-from tai_contract.access_control.registry import get_identity_provider_factory
-from tai_kit.net.jwt import JwksFetchError, JwtVerifyError
+from tai42_contract.access_control import OWNER_USER_ID_CLAIM
+from tai42_contract.access_control.identity import ApiKeyIdentityProvider, AuthIdentity, IdentityProvider
+from tai42_contract.access_control.registry import get_identity_provider_factory
+from tai42_kit.net.jwt import JwksFetchError, JwtVerifyError
 
-from tai_identity_oidc.provider import OidcIdentityProvider
+from tai42_identity_oidc.provider import OidcIdentityProvider
 
 from .conftest import AcSettingsStub, OidcServer, make_rsa_key, sign
 

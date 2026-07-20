@@ -1,4 +1,4 @@
-# tai-identity-oidc
+# tai42-identity-oidc
 
 [![CI](https://github.com/tai42ai/tai-identity-oidc/actions/workflows/ci.yml/badge.svg)](https://github.com/tai42ai/tai-identity-oidc/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
@@ -8,15 +8,15 @@ installable plugin that registers itself as the `"identity-oidc"` identity
 provider and resolves an **issuer-minted JWT** presented on an API call to an
 authenticated identity.
 
-Importing the package registers the provider in `tai-contract`'s module-level
+Importing the package registers the provider in `tai42-contract`'s module-level
 identity-provider registry (`register_identity_provider("identity-oidc", ...)`),
-with no `tai_app` handle involved — so it registers in any process that imports
+with no `tai42_app` handle involved — so it registers in any process that imports
 it, including ones that never `start()`. A deployment selects it by including
 `identity-oidc` in the access-control `auth_providers` list.
 
-Its only tai-* dependencies are `tai-contract` (the identity ABCs and the
-registry it registers through) and `tai-kit[jwt]` (the OIDC discovery / JWKS /
-JWT-verify helper, `tai_kit.net.jwt`). It **never** imports the skeleton — the
+Its only tai-* dependencies are `tai42-contract` (the identity ABCs and the
+registry it registers through) and `tai42-kit[jwt]` (the OIDC discovery / JWKS /
+JWT-verify helper, `tai42_kit.net.jwt`). It **never** imports the skeleton — the
 plugin is contract-facing, and the import is banned by ruff.
 
 ## The TAI ecosystem
@@ -36,7 +36,7 @@ platform-level story:
 ## Validate-only — no key minting, no stored state
 
 This provider implements the base
-`tai_contract.access_control.identity.IdentityProvider` ABC — deliberately **not**
+`tai42_contract.access_control.identity.IdentityProvider` ABC — deliberately **not**
 `ApiKeyIdentityProvider`. It mints no keys and holds no state: keys are managed at
 the external issuer, so the skeleton's key-minting surface refuses this provider
 loudly (Studio renders "keys are managed at the external issuer" rather than a raw
@@ -101,7 +101,7 @@ construction (boot).
 
 ## Surface
 
-The provider implements `tai_contract.access_control.identity.IdentityProvider`:
+The provider implements `tai42_contract.access_control.identity.IdentityProvider`:
 
 | Method | Does |
 |---|---|
@@ -125,7 +125,7 @@ editable dependency of the environment that runs the server:
 ```bash
 git clone https://github.com/tai42ai/tai-identity-oidc
 cd tai-skeleton   # or your own app checkout
-uv add --editable ../tai-identity-oidc    # once published: uv add tai-identity-oidc
+uv add --editable ../tai-identity-oidc    # once published: uv add tai42-identity-oidc
 ```
 
 ## Development
@@ -138,7 +138,7 @@ uv run pyright
 uv run pytest
 ```
 
-`[tool.uv.sources]` resolves `tai-contract` and `tai-kit` from sibling checkouts
+`[tool.uv.sources]` resolves `tai42-contract` and `tai42-kit` from sibling checkouts
 for local development; the published wheel floors them from the index.
 
 ## License

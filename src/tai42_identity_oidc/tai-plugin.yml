@@ -2,7 +2,7 @@ spec_version: 1
 namespace: tai42
 name: identity-oidc
 package: tai42-identity-oidc
-version: 0.2.0
+version: 0.2.0 # x-release-please-version
 description: "Validate-only OIDC identity provider for the TAI ecosystem: an installable plugin that registers itself as the \"identity-oidc\" identity provider and resolves an issuer-minted JWT to an authenticated identity (no key minting, no stored state)."
 license: Apache-2.0
 homepage: https://tai42.ai
